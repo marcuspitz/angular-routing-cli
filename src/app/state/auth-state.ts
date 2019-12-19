@@ -1,30 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { take, shareReplay } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { shareReplay, distinctUntilChanged, tap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
   })
 export class AuthState {
 
-    private loggedInSubject: Subject<boolean>;
+    private loggedInSubject: BehaviorSubject<boolean>;
     private loggedIn: Observable<boolean>;
 
     constructor() {
-        console.log("Constructor");
-        this.loggedInSubject = new Subject<boolean>();        
+        this.loggedInSubject = new BehaviorSubject<boolean>(false);        
         this.loggedIn = this.loggedInSubject.pipe(
             shareReplay(1),
         );        
-        
-        this.loggedIn.subscribe(a => {
-            console.log("SUBSCR:" + a);
-        });
-
-        this.loggedInSubject.next(false);
     }
 
-    isLogged = () : Observable<boolean> => this.loggedIn;
+    isLogged = () : Observable<boolean> => this.loggedIn.pipe(
+        distinctUntilChanged()
+    );
 
     logIn = () => this.loggedInSubject.next(true);
     logOut = () => this.loggedInSubject.next(false);

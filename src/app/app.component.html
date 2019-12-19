@@ -1,7 +1,16 @@
 <div style="text-align:center">
   <h1>
     Welcome to the Fixed Section of this page!
-  </h1>
+  </h1>  
+  <h2 *ngIf="!logged">
+      You are not logged in. Provide data and access the system right now!
+  </h2>
+  <h2 *ngIf="logged">
+    You are logged in, enjoy this!
+</h2>
+  <button (click)="logout()" class="float-right" *ngIf="logged">
+    Press here to Log out
+  </button>
 </div>
 
 <router-outlet></router-outlet>

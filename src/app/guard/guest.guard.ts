@@ -21,6 +21,7 @@ export class GuestGuard implements CanActivate, CanActivateChild, CanLoad {
 
         return this.authState.isLogged().pipe(
             map((loggedIn:boolean) => {
+                console.log("GUEST GUARD: " + loggedIn);
                 if (loggedIn) {
                     this.router.navigate(['/']);
                 }

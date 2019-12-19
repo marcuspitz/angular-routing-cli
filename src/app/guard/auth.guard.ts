@@ -18,8 +18,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+        
+        console.log("Someone is reching me");
+
         return this.authState.isLogged().pipe(
             tap((loggedIn:boolean) => {
+                console.log("AUTH GUARD: " + loggedIn);
                 if (!loggedIn) {
                     this.router.navigate(['/login']);
                 }
