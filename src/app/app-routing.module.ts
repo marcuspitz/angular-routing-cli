@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Error404Component } from './404/error404.component';
+import { AuthGuard } from './guard/auth.guard';
+import { GuestGuard } from './guard/guest.guard';
 
 const routes: Routes = [
     {
@@ -12,12 +14,20 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        component: LoginComponent
+        canActivate: [GuestGuard],
+        canLoad: [GuestGuard],
+        component: LoginComponent,
     },
     {
-        path: 'dashboard',
-        component: DashboardComponent
-    },
+        path: '',
+        canActivateChild: [AuthGuard],        
+        children: [
+            {
+                path: 'dashboard',
+                component: DashboardComponent
+            },
+        ]
+    },    
     {
         path: '404',
         component: Error404Component
